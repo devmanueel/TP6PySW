@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">
+      <i class="bi bi-book-half me-2"></i>iBiblioApp
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <!-- Opción: Socios -->
+        <li class="nav-item">
+          <a class="nav-link"
+             routerLink="/socios"
+             routerLinkActive="active"
+             [routerLinkActiveOptions]="{ exact: true }">
+            <i class="bi bi-people-fill me-1"></i>Socios
+          </a>
+        </li>
+
+        <!-- Agrega más enlaces si es necesario -->
+        <!--
+        <li class="nav-item">
+          
+        </li>
+        -->
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<main class="container-fluid py-4">
+
+  <router-outlet></router-outlet> 
+</main>
+
+<footer class="bg-light text-center text-lg-start mt-auto py-3 footer fixed-bottom">
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+    © {{ anioActual }} BiblioApp-Cliente. Desarrollado con Angular y Bootstrap.
+  </div>
+</footer>

@@ -1,0 +1,132 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Lista de Socios</h2>
+    <a routerLink="/socios/nuevo" class="btn btn-primary">
+      <i class="bi bi-plus-circle"></i> Nuevo Socio
+    </a>
+  </div>
+
+  @if (isLoading) {
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  } @else if (errorMsg) {
+    <div class="alert alert-danger">{{ errorMsg }}</div>
+  } @else if (!socios || !socios.length) {
+    <div class="alert alert-info">
+      No hay socios registrados.
+    </div>
+  } @else {
+    <!-- INICIO: Vista de Tabla (Visible en pantallas medianas y más grandes) -->
+    <div class="table-responsive d-none d-md-block"> <!-- Oculta en sm, muestra en md+ -->
+      <table class="table table-striped table-hover align-middle">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 80px;">Foto</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Email</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Estado</th>
+            <th scope="col" style="width: 120px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (socio of socios; track socio._id) {
+            <tr>
+              <td>
+                <img [src]="socio.foto || 'https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-600nw-1706867365.jpg'"
+                     alt="Foto de {{ socio.nombre }}"
+                     class="img-thumbnail rounded-circle"
+                     style="width: 60px; height: 60px; object-fit: cover;">
+              </td>
+              <td>{{ socio.nombre }}</td>
+              <td>{{ socio.email }}</td>
+              <td>{{ socio.telefono || 'N/A' }}</td>
+              <td>
+                <span class="badge"
+                      [ngClass]="{
+                        'bg-success': socio.estado === 'Activo',
+                        'bg-danger': socio.estado === 'Inactivo',
+                        'bg-secondary': socio.estado === '' || !socio.estado
+                      }">
+                  {{ socio.estado || 'Indefinido' }}
+                </span>
+              </td>
+              <td>
+                <button (click)="editSocio(socio._id)" class="btn btn-sm btn-outline-primary me-2" title="Editar">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button (click)="deleteSocio(socio._id)" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+              <tr>
+                  <td colspan="6" class="text-center">
+                      <div class="alert alert-info mb-0">No hay socios para mostrar en la tabla.</div>
+                  </td>
+              </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <!-- FIN: Vista de Tabla -->
+
+    <!-- INICIO: Vista de Tarjetas (Visible solo en pantallas pequeñas) -->
+    <div class="d-md-none"> <!-- Muestra en sm, oculta en md+ -->
+      @for (socio of socios; track socio._id) {
+        <div class="card mb-3 shadow-sm">
+          <div class="row g-0">
+            <div class="col-4 col-sm-3 d-flex align-items-center justify-content-center p-2">
+              <img [src]="socio.foto || 'https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-600nw-1706867365.jpg'"
+                   alt="Foto de {{ socio.nombre }}"
+                   class="img-thumbnail rounded"
+                   style="max-width: 100px; max-height: 100px; object-fit: cover;">
+            </div>
+            <div class="col-8 col-sm-9">
+              <div class="card-body">
+                <h5 class="card-title mb-1">{{ socio.nombre }}</h5>
+                <p class="card-text mb-1">
+                  <small class="text-muted">
+                    <i class="bi bi-envelope-fill me-1"></i> {{ socio.email }}
+                  </small>
+                </p>
+                @if (socio.telefono) {
+                  <p class="card-text mb-1">
+                    <small class="text-muted">
+                      <i class="bi bi-telephone-fill me-1"></i> {{ socio.telefono }}
+                    </small>
+                  </p>
+                }
+                <p class="card-text mb-2">
+                  <span class="badge"
+                        [ngClass]="{
+                          'bg-success': socio.estado === 'Activo',
+                          'bg-danger': socio.estado === 'Inactivo',
+                          'bg-secondary': socio.estado === '' || !socio.estado
+                        }">
+                    {{ socio.estado || 'Indefinido' }}
+                  </span>
+                </p>
+                <div class="mt-2">
+                  <button (click)="editSocio(socio._id)" class="btn btn-sm btn-outline-primary me-2" title="Editar">
+                    <i class="bi bi-pencil-square"></i> <span class="d-none d-sm-inline">Editar</span>
+                  </button>
+                  <button (click)="deleteSocio(socio._id)" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                    <i class="bi bi-trash"></i> <span class="d-none d-sm-inline">Eliminar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="alert alert-info mb-0">No hay socios para mostrar.</div>
+      }
+    </div>
+    <!-- FIN: Vista de Tarjetas -->
+  }
+</div>
