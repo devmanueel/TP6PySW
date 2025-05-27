@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.3",
+    "nodemon": "^3.1.10"
+  },
+  "name": "clase12",
+  "version": "1.0.0",
+  "description": "```bash\r         npm install express mongoose cors dotenv\r ```\r # Instalar dependencias de desarrollo (solo para desarrollo):\r   ```bash\r         npm install nodemon --save-dev\r ```\r # Arrancar el servidor \r   ```bash\r   npm run dev\r ```",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
