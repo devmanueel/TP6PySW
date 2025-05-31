@@ -1,0 +1,122 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+      <i class="bi bi-book me-2"></i>Lista de Libros
+    </h2>
+    <div>
+      <a routerLink="/libros/nuevo" class="btn btn-primary me-2">
+        <i class="bi bi-plus-circle"></i> Nuevo Libro
+      </a>
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Buscar por título o autor" 
+               [(ngModel)]="searchTerm">
+      </div>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2">Cargando libros...</p>
+    </div>
+  } @else if (errorMsg) {
+    <div class="alert alert-danger">{{ errorMsg }}</div>
+  } @else if (!libros.length) {
+    <div class="alert alert-info">
+      No hay libros registrados en el sistema.
+    </div>
+  } @else {
+    <!-- Vista de tabla para pantallas grandes -->
+    <div class="table-responsive d-none d-md-block">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Portada</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Año</th>
+            <th>Género</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (libro of filteredLibros; track libro._id) {
+            <tr>
+              <td>
+                <img [src]="libro.imagenPortada || 'assets/default-book.png'" 
+                     alt="Portada de {{ libro.titulo }}"
+                     class="img-thumbnail" 
+                     style="width: 60px; height: 80px; object-fit: cover;">
+              </td>
+              <td>{{ libro.titulo }}</td>
+              <td>{{ libro.autor }}</td>
+              <td>{{ libro.anioPublicacion }}</td>
+              <td>{{ libro.genero }}</td>
+              <td>
+                <button class="btn btn-sm" 
+                        [ngClass]="{
+                          'btn-success': libro.estado === 'Disponible',
+                          'btn-warning': libro.estado === 'Prestado'
+                        }"
+                        (click)="cambiarEstado(libro)">
+                  {{ libro.estado }}
+                </button>
+              </td>
+              <td>
+                <button (click)="editLibro(libro._id)" class="btn btn-sm btn-outline-primary me-2">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button (click)="deleteLibro(libro._id)" class="btn btn-sm btn-outline-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Vista de tarjetas para móviles -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 d-md-none">
+      @for (libro of filteredLibros; track libro._id) {
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <div class="card-img-top text-center p-3 bg-light">
+              <img [src]="libro.imagenPortada || 'assets/default-book.png'" 
+                   alt="Portada de {{ libro.titulo }}"
+                   style="height: 180px; width: auto; max-width: 100%; object-fit: contain;">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ libro.titulo }}</h5>
+              <p class="card-text text-muted">{{ libro.autor }}</p>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="badge bg-secondary">{{ libro.genero }}</span>
+                <span>{{ libro.anioPublicacion }}</span>
+              </div>
+              <button class="btn w-100 mb-2" 
+                      [ngClass]="{
+                        'btn-success': libro.estado === 'Disponible',
+                        'btn-warning': libro.estado === 'Prestado'
+                      }"
+                      (click)="cambiarEstado(libro)">
+                {{ libro.estado }}
+              </button>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button (click)="editLibro(libro._id)" class="btn btn-sm btn-outline-primary me-md-2">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button (click)="deleteLibro(libro._id)" class="btn btn-sm btn-outline-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

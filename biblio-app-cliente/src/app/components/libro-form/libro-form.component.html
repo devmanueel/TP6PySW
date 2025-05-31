@@ -1,0 +1,194 @@
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">
+        <i class="bi bi-book me-2"></i>
+        {{ isEditMode ? 'Editar Libro' : 'Nuevo Libro' }}
+      </h2>
+    </div>
+    
+    <div class="card-body">
+      @if (isLoading && isEditMode) {
+        <div class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-2">Cargando datos del libro...</p>
+        </div>
+      }
+      
+      @if (errorMsg) {
+        <div class="alert alert-danger">{{ errorMsg }}</div>
+      }
+      
+      @if (!isLoading || !isEditMode) {
+        <form [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Columna izquierda -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="isbn" class="form-label">ISBN <span class="text-danger">*</span></label>
+                <input type="text" id="isbn" class="form-control" formControlName="isbn"
+                       [ngClass]="{ 'is-invalid': isbnCtrl?.invalid && (isbnCtrl?.dirty || isbnCtrl?.touched) }">
+                @if (isbnCtrl?.invalid && (isbnCtrl?.dirty || isbnCtrl?.touched)) {
+                  <div class="invalid-feedback">
+                    @if (isbnCtrl?.errors?.['required']) {
+                      <div>El ISBN es obligatorio</div>
+                    }
+                    @if (isbnCtrl?.errors?.['minlength'] || isbnCtrl?.errors?.['maxlength']) {
+                      <div>El ISBN debe tener entre 10 y 13 caracteres</div>
+                    }
+                  </div>
+                }
+              </div>
+              
+              <div class="mb-3">
+                <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
+                <input type="text" id="titulo" class="form-control" formControlName="titulo"
+                       [ngClass]="{ 'is-invalid': tituloCtrl?.invalid && (tituloCtrl?.dirty || tituloCtrl?.touched) }">
+                @if (tituloCtrl?.invalid && (tituloCtrl?.dirty || tituloCtrl?.touched)) {
+                  <div class="invalid-feedback">
+                    @if (tituloCtrl?.errors?.['required']) {
+                      <div>El título es obligatorio</div>
+                    }
+                    @if (tituloCtrl?.errors?.['minlength']) {
+                      <div>El título debe tener al menos 3 caracteres</div>
+                    }
+                    @if (tituloCtrl?.errors?.['maxlength']) {
+                      <div>El título no puede exceder los 255 caracteres</div>
+                    }
+                  </div>
+                }
+              </div>
+              
+              <div class="mb-3">
+                <label for="autor" class="form-label">Autor <span class="text-danger">*</span></label>
+                <input type="text" id="autor" class="form-control" formControlName="autor"
+                       [ngClass]="{ 'is-invalid': autorCtrl?.invalid && (autorCtrl?.dirty || autorCtrl?.touched) }">
+                @if (autorCtrl?.invalid && (autorCtrl?.dirty || autorCtrl?.touched)) {
+                  <div class="invalid-feedback">
+                    @if (autorCtrl?.errors?.['required']) {
+                      <div>El autor es obligatorio</div>
+                    }
+                    @if (autorCtrl?.errors?.['minlength']) {
+                      <div>El autor debe tener al menos 3 caracteres</div>
+                    }
+                    @if (autorCtrl?.errors?.['maxlength']) {
+                      <div>El autor no puede exceder los 100 caracteres</div>
+                    }
+                  </div>
+                }
+              </div>
+              
+              <div class="mb-3">
+                <label for="anioPublicacion" class="form-label">Año de publicación <span class="text-danger">*</span></label>
+                <input type="number" id="anioPublicacion" class="form-control" formControlName="anioPublicacion"
+                       [ngClass]="{ 'is-invalid': anioCtrl?.invalid && (anioCtrl?.dirty || anioCtrl?.touched) }">
+                @if (anioCtrl?.invalid && (anioCtrl?.dirty || anioCtrl?.touched)) {
+                  <div class="invalid-feedback">
+                    @if (anioCtrl?.errors?.['required']) {
+                      <div>El año de publicación es obligatorio</div>
+                    }
+                    @if (anioCtrl?.errors?.['min'] || anioCtrl?.errors?.['max']) {
+                      <div>El año debe estar entre 1450 y 2025</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+            
+            <!-- Columna derecha -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="genero" class="form-label">Género <span class="text-danger">*</span></label>
+                <select id="genero" class="form-select" formControlName="genero"
+                        [ngClass]="{ 'is-invalid': generoCtrl?.invalid && (generoCtrl?.dirty || generoCtrl?.touched) }">
+                  <option value="">Seleccione un género</option>
+                  @for (genero of generos; track genero) {
+                    <option [value]="genero">{{ genero }}</option>
+                  }
+                </select>
+                @if (generoCtrl?.invalid && (generoCtrl?.dirty || generoCtrl?.touched)) {
+                  <div class="invalid-feedback">
+                    @if (generoCtrl?.errors?.['required']) {
+                      <div>El género es obligatorio</div>
+                    }
+                  </div>
+                }
+              </div>
+              
+              <div class="mb-3">
+                <label for="formato" class="form-label">Formato <span class="text-danger">*</span></label>
+                <select id="formato" class="form-select" formControlName="formato"
+                        [ngClass]="{ 'is-invalid': formatoCtrl?.invalid && (formatoCtrl?.dirty || formatoCtrl?.touched) }">
+                  <option value="">Seleccione un formato</option>
+                  @for (formato of formatos; track formato) {
+                    <option [value]="formato">{{ formato }}</option>
+                  }
+                </select>
+                @if (formatoCtrl?.invalid && (formatoCtrl?.dirty || formatoCtrl?.touched)) {
+                  <div class="invalid-feedback">
+                    @if (formatoCtrl?.errors?.['required']) {
+                      <div>El formato es obligatorio</div>
+                    }
+                  </div>
+                }
+              </div>
+              
+              <div class="mb-3">
+                <label for="editorial" class="form-label">Editorial <span class="text-danger">*</span></label>
+                <input type="text" id="editorial" class="form-control" formControlName="editorial"
+                       [ngClass]="{ 'is-invalid': editorialCtrl?.invalid && (editorialCtrl?.dirty || editorialCtrl?.touched) }">
+                @if (editorialCtrl?.invalid && (editorialCtrl?.dirty || editorialCtrl?.touched)) {
+                  <div class="invalid-feedback">
+                    @if (editorialCtrl?.errors?.['required']) {
+                      <div>La editorial es obligatoria</div>
+                    }
+                    @if (editorialCtrl?.errors?.['minlength']) {
+                      <div>La editorial debe tener al menos 3 caracteres</div>
+                    }
+                    @if (editorialCtrl?.errors?.['maxlength']) {
+                      <div>La editorial no puede exceder los 100 caracteres</div>
+                    }
+                  </div>
+                }
+              </div>
+              
+              <div class="mb-3">
+                <label for="estado" class="form-label">Estado <span class="text-danger">*</span></label>
+                <select id="estado" class="form-select" formControlName="estado">
+                  <option value="Disponible">Disponible</option>
+                  <option value="Prestado">Prestado</option>
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label for="imagenPortada" class="form-label">Portada del libro</label>
+                <input type="file" id="imagenPortada" class="form-control" (change)="onFileChange($event)" accept="image/*">
+                
+                @if (imagePreview) {
+                  <div class="mt-3 text-center">
+                    <img [src]="imagePreview" alt="Vista previa de la portada" 
+                         class="img-thumbnail" style="max-height: 200px;">
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-end mt-4">
+            <button type="button" routerLink="/libros" class="btn btn-secondary me-2">
+              <i class="bi bi-x-circle"></i> Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="libroForm.invalid || isLoading">
+              @if (isLoading) {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              }
+              {{ isLoading ? 'Guardando...' : (isEditMode ? 'Actualizar Libro' : 'Guardar Libro') }}
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+</div>

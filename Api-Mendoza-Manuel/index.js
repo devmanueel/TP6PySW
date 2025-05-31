@@ -16,6 +16,14 @@ conectarDB();
 //todas las rutas son accesible mediante estos prefijos defininos en las rutas para las consulta 
 
 app.use(`/api/socios`, require(`./routes/socio`));
+app.use(`/api/libros`, require(`./routes/libro`));
+
+
+// Configuración para subir imágenes (si usas multer)
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+
+
 //DEFINIMOS UNA CONSTANTE PARA EL Puerto
 const PORT = process.env.PORT || 4000;
 

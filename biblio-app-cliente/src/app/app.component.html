@@ -1,47 +1,77 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">
-      <i class="bi bi-book-half me-2"></i>iBiblioApp
-    </a>
+<body class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" routerLink="/">
+        <i class="bi bi-book-half me-2 fs-4"></i>
+        <span class="fw-bold">iBiblioApp</span>
+      </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-        <!-- Opción: Socios -->
-        <li class="nav-item">
-          <a class="nav-link"
-             routerLink="/socios"
-             routerLinkActive="active"
-             [routerLinkActiveOptions]="{ exact: true }">
-            <i class="bi bi-people-fill me-1"></i>Socios
-          </a>
-        </li>
-
-        <!-- Agrega más enlaces si es necesario -->
-        <!--
-        <li class="nav-item">
-          
-        </li>
-        -->
-
-      </ul>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center py-3 px-3 rounded"
+               routerLink="/socios"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }">
+              <i class="bi bi-people-fill me-2"></i>
+              <span>Socios</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center py-3 px-3 rounded" 
+               routerLink="/libros" 
+               routerLinkActive="active">
+              <i class="bi bi-book me-2"></i>
+              <span>Libros</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
+  <!-- Main Content -->
+  <main class="container-fluid py-4 flex-grow-1">
+    <router-outlet></router-outlet> 
+  </main>
 
-<main class="container-fluid py-4">
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4 mb-md-0">
+          <h5 class="text-uppercase">IBIELIOAPP</h5>
+          <p>Sistema de gestión para bibliotecas y socios.</p>
+          <p>Desarrollado con Angular y Bootstrap.</p>
+        </div>
 
-  <router-outlet></router-outlet> 
-</main>
+        <div class="col-md-4 mb-4 mb-md-0">
+          <h5 class="text-uppercase">REDES SOCIALES</h5>
+          <div class="social-icons">
+            <a href="https://www.linkedin.com/in/manuel-santiago-mendoza-354224237/" class="text-white me-3"><i class="bi bi-linkedin fs-4"></i></a>
+            <a href="https://github.com/devmanueel" class="text-white me-3"><i class="bi bi-github fs-4"></i></a>
+            <a href="https://www.facebook.com/manuelsantiago.mendoza.56/" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
+          </div>
+        </div>
 
-<footer class="bg-light text-center text-lg-start mt-auto py-3 footer fixed-bottom">
-  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-    © {{ anioActual }} BiblioApp-Cliente. Desarrollado con Angular y Bootstrap.
-  </div>
-</footer>
+        <div class="col-md-4">
+          <h5 class="text-uppercase">CONTACTO</h5>
+          <ul class="list-unstyled">
+            <li><i class="bi bi-envelope me-2"></i>santiagomendoza.sm64&#64;gmail.com</li>
+            <li><i class="bi bi-phone me-2"></i> 3884605488</li>
+          </ul>
+        </div>
+      </div>
+      <hr class="my-4 bg-light">
+      <div class="text-center">
+        © 2025 - Desarrollado por Mendoza Manuel Santiago
+      </div>
+    </div>
+  </footer>
+</body>
